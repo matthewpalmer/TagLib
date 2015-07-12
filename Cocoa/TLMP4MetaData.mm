@@ -17,18 +17,11 @@ using namespace TagLib;
 
 @implementation TLMP4MetaData
 
-- (void)finalize
-{
-	delete _tagFile;
-	
-	[super finalize];
-}
 
 - (void)dealloc
 {
 	delete _tagFile;
 	
-	[super dealloc];
 }
 
 #pragma mark -
@@ -67,7 +60,6 @@ using namespace TagLib;
 											   userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open the file %@ with TLMP4MetaData. Sorry!", url] 
 																					forKey:NSLocalizedDescriptionKey]];
 			
-			[self release];
 			return nil;
 		}
 		
@@ -309,7 +301,7 @@ using namespace TagLib;
 		{
 			ByteVector artworkBytes = items["covr"].toByteVectorList()[0];
 			NSData *artworkData = [NSData dataWithBytes:artworkBytes.data() length:artworkBytes.size()];
-			return [[[NSImage alloc] initWithData:artworkData] autorelease];
+			return [[NSImage alloc] initWithData:artworkData];
 		}
 	}
 	

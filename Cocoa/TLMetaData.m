@@ -141,7 +141,6 @@ static NSMutableSet *PKMetaDataGetClasses()
 	TLMetaData *newSelf = [[metaDataClass alloc] initWithURL:url openReadOnly:openReadOnly error:error];
 	if(newSelf)
 	{
-		[self release];
 		self = newSelf;
 		
 		return self;

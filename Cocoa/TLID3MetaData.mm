@@ -21,18 +21,11 @@ using namespace TagLib;
 
 @implementation TLID3MetaData
 
-- (void)finalize
-{
-	delete _tagFile;
-	
-	[super finalize];
-}
 
 - (void)dealloc
 {
 	delete _tagFile;
 	
-	[super dealloc];
 }
 
 #pragma mark -
@@ -74,7 +67,6 @@ using namespace TagLib;
 											   userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Could not open the file %@ with TLID3MetaData. Sorry!", url] 
 																					forKey:NSLocalizedDescriptionKey]];
 			
-			[self release];
 			return nil;
 		}
 		
@@ -330,7 +322,7 @@ using namespace TagLib;
 			{
 				ByteVector frameData = frame->picture();
 				NSData *pictureData = [NSData dataWithBytes:frameData.data() length:frameData.size()];
-				return [[[NSImage alloc] initWithData:pictureData] autorelease];
+				return [[NSImage alloc] initWithData:pictureData];
 			}
 		}
 	}
