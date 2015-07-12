@@ -10,7 +10,7 @@
 
 #ifdef __cplusplus
 
-#import <TagLib/tstring.h>
+#import "tstring.h"
 
 /*!
  @category

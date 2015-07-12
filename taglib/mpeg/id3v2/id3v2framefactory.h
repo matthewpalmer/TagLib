@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,16 +26,16 @@
 #ifndef TAGLIB_ID3V2FRAMEFACTORY_H
 #define TAGLIB_ID3V2FRAMEFACTORY_H
 
-#include <TagLib/taglib_export.h>
-#include <TagLib/tbytevector.h>
-#include <TagLib/id3v2frame.h>
-#include <TagLib/id3v2header.h>
+#include "taglib_export.h"
+#include "tbytevector.h"
+#include "id3v2frame.h"
+#include "id3v2header.h"
 
 namespace TagLib {
 
   namespace ID3v2 {
 
-    class TAGLIB_EXPORT TextIdentificationFrame;
+    class TextIdentificationFrame;
 
     //! A factory for creating ID3v2 frames during parsing
 
@@ -94,10 +94,18 @@ namespace TagLib {
       Frame *createFrame(const ByteVector &data, Header *tagHeader) const;
 
       /*!
+       * After a tag has been read, this tries to rebuild some of them
+       * information, most notably the recording date, from frames that
+       * have been deprecated and can't be upgraded directly.
+       */
+      // BIC: Make virtual
+      void rebuildAggregateFrames(ID3v2::Tag *tag) const;
+
+      /*!
        * Returns the default text encoding for text frames.  If setTextEncoding()
        * has not been explicitly called this will only be used for new text
        * frames.  However, if this value has been set explicitly all frames will be
-       * converted to this type (unless it's explitly set differently for the
+       * converted to this type (unless it's explicitly set differently for the
        * individual frame) when being rendered.
        *
        * \see setDefaultTextEncoding()
@@ -123,8 +131,7 @@ namespace TagLib {
       FrameFactory();
 
       /*!
-       * Destroys the frame factory.  In most cases this will never be called (as
-       * is typical of singletons).
+       * Destroys the frame factory.
        */
       virtual ~FrameFactory();
 
@@ -155,7 +162,7 @@ namespace TagLib {
 
       void updateGenre(TextIdentificationFrame *frame) const;
 
-      static FrameFactory *factory;
+      static FrameFactory factory;
 
       class FrameFactoryPrivate;
       FrameFactoryPrivate *d;

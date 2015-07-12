@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,31 +26,18 @@
 #ifndef TAGLIB_FILE_H
 #define TAGLIB_FILE_H
 
-#include <TagLib/taglib_export.h>
-#include <TagLib/taglib.h>
-#include <TagLib/tbytevector.h>
+#include "taglib_export.h"
+#include "taglib.h"
+#include "tag.h"
+#include "tbytevector.h"
+#include "tiostream.h"
 
 namespace TagLib {
 
   class String;
   class Tag;
   class AudioProperties;
-
-#ifdef _WIN32
-  class TAGLIB_EXPORT FileName
-  {
-  public:
-    FileName(const wchar_t *name) : m_wname(name) {}
-    FileName(const char *name) : m_name(name) {}
-    operator const wchar_t *() const { return m_wname.c_str(); }
-    operator const char *() const { return m_name.c_str(); }
-  private:
-    std::string m_name;
-    std::wstring m_wname;
-  };
-#else
-  typedef const char *FileName;
-#endif
+  class PropertyMap;
 
   //! A file class with some useful methods for tag manipulation
 
@@ -92,6 +79,44 @@ namespace TagLib {
     virtual Tag *tag() const = 0;
 
     /*!
+     * Exports the tags of the file as dictionary mapping (human readable) tag
+     * names (uppercase Strings) to StringLists of tag values. Calls the according
+     * specialization in the File subclasses.
+     * For each metadata object of the file that could not be parsed into the PropertyMap
+     * format, the returned map's unsupportedData() list will contain one entry identifying
+     * that object (e.g. the frame type for ID3v2 tags). Use removeUnsupportedProperties()
+     * to remove (a subset of) them.
+     * For files that contain more than one tag (e.g. an MP3 with both an ID3v2 and an ID3v2
+     * tag) only the most "modern" one will be exported (ID3v2 in this case).
+     * BIC: Will be made virtual in future releases.
+     */
+    PropertyMap properties() const;
+
+    /*!
+     * Removes unsupported properties, or a subset of them, from the file's metadata.
+     * The parameter \a properties must contain only entries from
+     * properties().unsupportedData().
+     * BIC: Will be mad virtual in future releases.
+     */
+    void removeUnsupportedProperties(const StringList& properties);
+
+    /*!
+     * Sets the tags of this File to those specified in \a properties. Calls the
+     * according specialization method in the subclasses of File to do the translation
+     * into the format-specific details.
+     * If some value(s) could not be written imported to the specific metadata format,
+     * the returned PropertyMap will contain those value(s). Otherwise it will be empty,
+     * indicating that no problems occurred.
+     * With file types that support several tag formats (for instance, MP3 files can have
+     * ID3v1, ID3v2, and APEv2 tags), this function will create the most appropriate one
+     * (ID3v2 for MP3 files). Older formats will be updated as well, if they exist, but won't
+     * be taken into account for the return value of this function.
+     * See the documentation of the subclass implementations for detailed descriptions.
+     * BIC: will become pure virtual in the future
+     */
+    PropertyMap setProperties(const PropertyMap &properties);
+
+    /*!
      * Returns a pointer to this file's audio properties.  This should be
      * reimplemented in the concrete subclasses.  If no audio properties were
      * read then this will return a null pointer.
@@ -130,12 +155,12 @@ namespace TagLib {
      * Returns the offset in the file that \a pattern occurs at or -1 if it can
      * not be found.  If \a before is set, the search will only continue until the
      * pattern \a before is found.  This is useful for tagging purposes to search
-     * for a tag before the synch frame.
+     * for a tag before the sync frame.
      *
      * Searching starts at \a fromOffset, which defaults to the beginning of the
      * file.
      *
-     * \note This has the practial limitation that \a pattern can not be longer
+     * \note This has the practical limitation that \a pattern can not be longer
      * than the buffer size used by readBlock().  Currently this is 1024 bytes.
      */
     long find(const ByteVector &pattern,
@@ -146,12 +171,12 @@ namespace TagLib {
      * Returns the offset in the file that \a pattern occurs at or -1 if it can
      * not be found.  If \a before is set, the search will only continue until the
      * pattern \a before is found.  This is useful for tagging purposes to search
-     * for a tag before the synch frame.
+     * for a tag before the sync frame.
      *
      * Searching starts at \a fromOffset and proceeds from the that point to the
      * beginning of the file and defaults to the end of the file.
      *
-     * \note This has the practial limitation that \a pattern can not be longer
+     * \note This has the practical limitation that \a pattern can not be longer
      * than the buffer size used by readBlock().  Currently this is 1024 bytes.
      */
     long rfind(const ByteVector &pattern,
@@ -188,7 +213,7 @@ namespace TagLib {
     bool isOpen() const;
 
     /*!
-     * Returns true if the file is open and readble.
+     * Returns true if the file is open and readable.
      */
     bool isValid() const;
 
@@ -238,7 +263,18 @@ namespace TagLib {
      * \note Constructor is protected since this class should only be
      * instantiated through subclasses.
      */
-    File(FileName file, bool openReadOnly);
+    File(FileName file);
+
+    /*!
+     * Construct a File object and use the \a stream instance.
+     *
+     * \note TagLib will *not* take ownership of the stream, the caller is
+     * responsible for deleting it after the File object.
+     *
+     * \note Constructor is protected since this class should only be
+     * instantiated through subclasses.
+     */
+    File(IOStream *stream);
 
     /*!
      * Marks the file as valid or invalid.

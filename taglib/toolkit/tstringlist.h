@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,10 +26,10 @@
 #ifndef TAGLIB_STRINGLIST_H
 #define TAGLIB_STRINGLIST_H
 
-#include <TagLib/tstring.h>
-#include <TagLib/tlist.h>
-#include <TagLib/tbytevectorlist.h>
-#include <TagLib/taglib_export.h>
+#include "tstring.h"
+#include "tlist.h"
+#include "tbytevectorlist.h"
+#include "taglib_export.h"
 
 #include <iostream>
 
@@ -38,7 +38,7 @@ namespace TagLib {
   //! A list of strings
 
   /*!
-   * This is a spcialization of the List class with some members convention for
+   * This is a specialization of the List class with some members convention for
    * string operations.
    */
 

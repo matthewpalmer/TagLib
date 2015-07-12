@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,7 +26,7 @@
 #ifndef TAGLIB_AUDIOPROPERTIES_H
 #define TAGLIB_AUDIOPROPERTIES_H
 
-#include <TagLib/taglib_export.h>
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -34,7 +34,7 @@ namespace TagLib {
 
   /*!
    * The values here are common to most audio formats.  For more specific, codec
-   * dependant values, please see see the subclasses APIs.  This is meant to
+   * dependent values, please see see the subclasses APIs.  This is meant to
    * compliment the TagLib::File and TagLib::Tag APIs in providing a simple
    * interface that is sufficient for most applications.
    */

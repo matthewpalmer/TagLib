@@ -15,41 +15,55 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
  *   http://www.mozilla.org/MPL/                                           *
  ***************************************************************************/
 
-#include <iostream>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include "tdebug.h"
+#include "tstring.h"
+#include "tdebuglistener.h"
+#include "tutils.h"
+
 #include <bitset>
+#include <cstdio>
+#include <cstdarg>
 
-#include <TagLib/tdebug.h>
-#include <TagLib/tstring.h>
-
-using namespace TagLib;
-
-#ifndef NDEBUG
-void TagLib::debug(const String &s)
+namespace TagLib
 {
-  std::cerr << "TagLib: " << s << std::endl;
-}
+  // The instance is defined in tdebuglistener.cpp.
+  extern DebugListener *debugListener;
 
-void TagLib::debugData(const ByteVector &v)
-{
-  for(uint i = 0; i < v.size(); i++) {
+  void debug(const String &s)
+  {
+#if !defined(NDEBUG) || defined(TRACE_IN_RELEASE)
 
-    std::cout << "*** [" << i << "] - '" << char(v[i]) << "' - int " << int(v[i])
-              << std::endl;
+    debugListener->printMessage("TagLib: " + s + "\n");
 
-    std::bitset<8> b(v[i]);
+#endif
+  }
 
-    for(int j = 0; j < 8; j++)
-      std::cout << i << ":" << j << " " << b.test(j) << std::endl;
+  void debugData(const ByteVector &v)
+  {
+#if !defined(NDEBUG) || defined(TRACE_IN_RELEASE)
 
-    std::cout << std::endl;
+    for(size_t i = 0; i < v.size(); ++i)
+    {
+      std::string bits = std::bitset<8>(v[i]).to_string();
+      String msg = Utils::formatString(
+        "*** [%d] - char '%c' - int %d, 0x%02x, 0b%s\n",
+        i, v[i], v[i], v[i], bits.c_str());
+
+      debugListener->printMessage(msg);
+    }
+
+#endif
   }
 }
-#endif

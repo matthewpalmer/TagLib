@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,8 +26,8 @@
 #ifndef TAGLIB_COMMENTSFRAME_H
 #define TAGLIB_COMMENTSFRAME_H
 
-#include <TagLib/id3v2frame.h>
-#include <TagLib/taglib_export.h>
+#include "id3v2frame.h"
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -36,7 +36,7 @@ namespace TagLib {
     //! An implementation of ID3v2 comments
 
     /*!
-     * This implements the ID3v2 comment format.  An ID3v2 comment concists of
+     * This implements the ID3v2 comment format.  An ID3v2 comment consists of
      * a language encoding, a description and a single text field.
      */
 
@@ -106,7 +106,7 @@ namespace TagLib {
       /*!
        * Sets the description of the comment to \a s.
        *
-       * \see decription()
+       * \see description()
        */
       void setDescription(const String &s);
 
@@ -137,8 +137,19 @@ namespace TagLib {
       void setTextEncoding(String::Type encoding);
 
       /*!
+       * Parses this frame as PropertyMap with a single key.
+       * - if description() is empty or "COMMENT", the key will be "COMMENT"
+       * - if description() is not a valid PropertyMap key, the frame will be
+       *   marked unsupported by an entry "COMM/<description>" in the unsupportedData()
+       *   attribute of the returned map.
+       * - otherwise, the key will be "COMMENT:<description>"
+       * - The single value will be the frame's text().
+       */
+      PropertyMap asProperties() const;
+
+      /*!
        * Comments each have a unique description.  This searches for a comment
-       * frame with the decription \a d and returns a pointer to it.  If no
+       * frame with the description \a d and returns a pointer to it.  If no
        * frame is found that matches the given description null is returned.
        *
        * \see description()

@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,12 +26,12 @@
 #include <iostream>
 #include <bitset>
 
-#include <TagLib/tstring.h>
-#include <TagLib/tdebug.h>
+#include <tstring.h>
+#include <tdebug.h>
 
-#include <TagLib/id3v2header.h>
-#include <TagLib/id3v2footer.h>
-#include <TagLib/id3v2synchdata.h>
+#include "id3v2header.h"
+#include "id3v2footer.h"
+#include "id3v2synchdata.h"
 
 using namespace TagLib;
 using namespace ID3v2;
@@ -164,7 +164,7 @@ ByteVector Header::render() const
   // add the version number -- we always render a 2.4.0 tag regardless of what
   // the tag originally was.
 
-  v.append(char(4));
+  v.append(char(majorVersion()));
   v.append(char(0));
 
   // Currently we don't actually support writing extended headers, footers or
@@ -215,7 +215,7 @@ void Header::parse(const ByteVector &data)
     return;
   }
 
-  for(ByteVector::Iterator it = sizeData.begin(); it != sizeData.end(); it++) {
+  for(ByteVector::ConstIterator it = sizeData.begin(); it != sizeData.end(); it++) {
     if(uchar(*it) >= 128) {
       d->tagSize = 0;
       debug("TagLib::ID3v2::Header::parse() - One of the size bytes in the id3v2 header was greater than the allowed 128.");

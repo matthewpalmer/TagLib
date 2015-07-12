@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,9 +26,9 @@
 #ifndef TAGLIB_RELATIVEVOLUMEFRAME_H
 #define TAGLIB_RELATIVEVOLUMEFRAME_H
 
-#include <TagLib/tlist.h>
-#include <TagLib/id3v2frame.h>
-#include <TagLib/taglib_export.h>
+#include "tlist.h"
+#include "id3v2frame.h"
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -140,7 +140,7 @@ namespace TagLib {
 
       /*
        * There was a terrible API goof here, and while this can't be changed to
-       * the way it appears below for binary compaibility reasons, let's at
+       * the way it appears below for binary compatibility reasons, let's at
        * least pretend that it looks clean.
        */
 
@@ -149,7 +149,7 @@ namespace TagLib {
       /*!
        * Returns the relative volume adjustment "index".  As indicated by the
        * ID3v2 standard this is a 16-bit signed integer that reflects the
-       * decibils of adjustment when divided by 512.
+       * decibels of adjustment when divided by 512.
        *
        * This defaults to returning the value for the master volume channel if
        * available and returns 0 if the specified channel does not exist.
@@ -161,7 +161,7 @@ namespace TagLib {
 
       /*!
        * Set the volume adjustment to \a index.  As indicated by the ID3v2
-       * standard this is a 16-bit signed integer that reflects the decibils of
+       * standard this is a 16-bit signed integer that reflects the decibels of
        * adjustment when divided by 512.
        *
        * By default this sets the value for the master volume.

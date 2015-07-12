@@ -15,22 +15,22 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
  *   http://www.mozilla.org/MPL/                                           *
  ***************************************************************************/
 
-#include <TagLib/id3v1genres.h>
+#include "id3v1genres.h"
 
 using namespace TagLib;
 
 namespace TagLib {
   namespace ID3v1 {
 
-    static const int genresSize = 148;
+    static const int genresSize = 192;
     static const String genres[] = {
       "Blues",
       "Classic Rock",
@@ -179,7 +179,51 @@ namespace TagLib {
       "Thrash Metal",
       "Anime",
       "Jpop",
-      "Synthpop"
+      "Synthpop",
+      "Abstract",
+      "Art Rock",
+      "Baroque",
+      "Bhangra",
+      "Big Beat",
+      "Breakbeat",
+      "Chillout",
+      "Downtempo",
+      "Dub",
+      "EBM",
+      "Eclectic",
+      "Electro",
+      "Electroclash",
+      "Emo",
+      "Experimental",
+      "Garage",
+      "Global",
+      "IDM",
+      "Illbient",
+      "Industro-Goth",
+      "Jam Band",
+      "Krautrock",
+      "Leftfield",
+      "Lounge",
+      "Math Rock",
+      "New Romantic",
+      "Nu-Breakz",
+      "Post-Punk",
+      "Post-Rock",
+      "Psytrance",
+      "Shoegaze",
+      "Space Rock",
+      "Trop Rock",
+      "World Music",
+      "Neoclassical",
+      "Audiobook",
+      "Audio Theatre",
+      "Neue Deutsche Welle",
+      "Podcast",
+      "Indie Rock",
+      "G-Funk",
+      "Dubstep",
+      "Garage Rock",
+      "Psybient"
     };
   }
 }
@@ -207,7 +251,7 @@ ID3v1::GenreMap ID3v1::genreMap()
 String ID3v1::genre(int i)
 {
   if(i >= 0 && i < genresSize)
-    return genres[i];
+    return genres[i] + String::null; // always make a copy
   return String::null;
 }
 

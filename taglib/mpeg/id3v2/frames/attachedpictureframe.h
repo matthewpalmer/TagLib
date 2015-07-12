@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,9 +26,9 @@
 #ifndef TAGLIB_ATTACHEDPICTUREFRAME_H
 #define TAGLIB_ATTACHEDPICTUREFRAME_H
 
-#include <TagLib/id3v2frame.h>
-#include <TagLib/id3v2header.h>
-#include <TagLib/taglib_export.h>
+#include "id3v2frame.h"
+#include "id3v2header.h"
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -92,7 +92,7 @@ namespace TagLib {
         //! Illustration related to the track
         Illustration       = 0x12,
         //! Logo of the band or performer
-        BanRKLogForDebuggingo           = 0x13,
+        BandLogo           = 0x13,
         //! Logo of the publisher (record company)
         PublisherLogo      = 0x14
       };

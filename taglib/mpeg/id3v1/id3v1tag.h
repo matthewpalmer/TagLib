@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,9 +26,9 @@
 #ifndef TAGLIB_ID3V1TAG_H
 #define TAGLIB_ID3V1TAG_H
 
-#include <TagLib/tag.h>
-#include <TagLib/tbytevector.h>
-#include <TagLib/taglib_export.h>
+#include "tag.h"
+#include "tbytevector.h"
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -52,7 +52,7 @@ namespace TagLib {
      *
      * \warning It is advisable <b>not</b> to write non-ISO-8859-1 data to ID3v1
      * tags.  Please consider disabling the writing of ID3v1 tags in the case
-     * that the data is ISO-8859-1.
+     * that the data is not ISO-8859-1.
      *
      * \see ID3v1::Tag::setStringHandler()
      */
@@ -62,6 +62,7 @@ namespace TagLib {
       TAGLIB_IGNORE_MISSING_DESTRUCTOR
     public:
       // BIC: Add virtual destructor.
+      StringHandler();
 
       /*!
        * Decode a string from \a data.  The default implementation assumes that
@@ -84,7 +85,7 @@ namespace TagLib {
     //! The main class in the ID3v1 implementation
 
     /*!
-     * This is an implementation of the ID3v1 format.  ID3v1 is both the simplist
+     * This is an implementation of the ID3v1 format.  ID3v1 is both the simplest
      * and most common of tag formats but is rather limited.  Because of its
      * pervasiveness and the way that applications have been written around the
      * fields that it provides, the generic TagLib::Tag API is a mirror of what is
@@ -139,20 +140,40 @@ namespace TagLib {
       virtual String album() const;
       virtual String comment() const;
       virtual String genre() const;
-      virtual uint year() const;
-      virtual uint track() const;
+      virtual TagLib::uint year() const;
+      virtual TagLib::uint track() const;
 
       virtual void setTitle(const String &s);
       virtual void setArtist(const String &s);
       virtual void setAlbum(const String &s);
       virtual void setComment(const String &s);
       virtual void setGenre(const String &s);
-      virtual void setYear(uint i);
-      virtual void setTrack(uint i);
+      virtual void setYear(TagLib::uint i);
+      virtual void setTrack(TagLib::uint i);
+
+      /*!
+       * Returns the genre in number.
+       *
+       * \note Normally 255 indicates that this tag contains no genre.
+       */
+      TagLib::uint genreNumber() const;
+
+      /*!
+       * Sets the genre in number to \a i.
+       *
+       * \note Valid value is from 0 up to 255. Normally 255 indicates that
+       * this tag contains no genre.
+       */
+      void setGenreNumber(TagLib::uint i);
 
       /*!
        * Sets the string handler that decides how the ID3v1 data will be
        * converted to and from binary data.
+       * If the parameter \a handler is null, the previous handler is
+       * released and default ISO-8859-1 handler is restored.
+       *
+       * \note The caller is responsible for deleting the previous handler
+       * as needed after it is released.
        *
        * \see StringHandler
        */

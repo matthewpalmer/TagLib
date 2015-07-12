@@ -15,8 +15,8 @@
  *                                                                         *
  *   You should have received a copy of the GNU Lesser General Public      *
  *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
+ *   02110-1301  USA                                                       *
  *                                                                         *
  *   Alternatively, this file is available under the Mozilla Public        *
  *   License Version 1.1.  You may obtain a copy of the License at         *
@@ -26,8 +26,8 @@
 #ifndef TAGLIB_POPULARIMETERFRAME_H
 #define TAGLIB_POPULARIMETERFRAME_H
 
-#include <TagLib/id3v2frame.h>
-#include <TagLib/taglib_export.h>
+#include "id3v2frame.h"
+#include "taglib_export.h"
 
 namespace TagLib {
 
@@ -36,7 +36,7 @@ namespace TagLib {
     //! An implementation of ID3v2 "popularimeter"
 
     /*!
-     * This implements the ID3v2 popularimeter (POPM frame).  It concists of
+     * This implements the ID3v2 popularimeter (POPM frame).  It consists of
      * an email, a rating and an optional counter.
      */
 
